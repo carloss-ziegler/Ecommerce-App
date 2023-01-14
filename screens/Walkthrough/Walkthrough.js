@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { View, Text, Animated } from "react-native";
 import { TextButton } from "../../components";
 import { COLORS, SIZES, constants, FONTS } from "../../constants";
+import Walkthrough1 from "./Walkthrough1";
 
 const Walkthrough = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -18,6 +19,12 @@ const Walkthrough = () => {
         }}
       >
         {constants.walkthrough.map((item, index) => {
+          const dotColor = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [COLORS.dark08, COLORS.primary, COLORS.dark08],
+            extrapolate: "clamp",
+          });
+
           return (
             <Animated.View
               key={index}
@@ -26,7 +33,7 @@ const Walkthrough = () => {
                 marginHorizontal: 6,
                 width: 10,
                 height: 10,
-                backgroundColor: "blue",
+                backgroundColor: dotColor,
               }}
             />
           );
@@ -51,6 +58,41 @@ const Walkthrough = () => {
         }}
       >
         <Dots />
+
+        <View
+          style={{
+            flexDirection: "row",
+            height: 55,
+          }}
+        >
+          <TextButton
+            label="Join Now"
+            contentContainerStyle={{
+              flex: 1,
+              borderRadius: SIZES.radius,
+              backgroundColor: COLORS.lightGrey,
+            }}
+            labelStyle={{
+              color: COLORS.primary,
+              ...FONTS.h3,
+              fontWeight: "500",
+            }}
+          />
+
+          <TextButton
+            label="Log In"
+            contentContainerStyle={{
+              flex: 1,
+              marginLeft: SIZES.radius,
+              borderRadius: SIZES.radius,
+              backgroundColor: COLORS.primary,
+            }}
+            labelStyle={{
+              ...FONTS.h3,
+              fontWeight: "500",
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -89,8 +131,11 @@ const Walkthrough = () => {
               <View
                 style={{
                   flex: 1,
+                  justifyContent: "center",
                 }}
-              ></View>
+              >
+                {index == 0 && <Walkthrough1 />}
+              </View>
 
               <View
                 style={{
